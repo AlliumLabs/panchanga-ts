@@ -1,0 +1,22 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "commitMessage": "Release v${version}",
+    "tagAnnotation": "Release v${version}",
+    "requireCleanWorkingDir": true,
+    "requireUpstream": true,
+    "push": true
+  },
+  "npm": {
+    "publish": true,
+    "tag": "latest"
+  },
+  "github": {
+    "release": true
+  },
+  "hooks": {
+    "before:init": "npm test",
+    "after:release": "echo '🚀 Released version ${version}'"
+  },
+  "ci": true
+}
