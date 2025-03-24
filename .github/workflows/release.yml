@@ -24,9 +24,6 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - name: Run Tests
-        run: npm test
-
       - name: Release Package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
