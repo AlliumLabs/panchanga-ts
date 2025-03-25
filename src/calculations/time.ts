@@ -1,5 +1,5 @@
 import { AstroTime, Observer, Body, SearchRiseSet } from "astronomy-engine";
-import { DayDurationResult, VaaraResult } from "../models/types";
+import { DayDurationResult, VaaraResult } from "../models";
 import { formatTimeFromDate } from "../utils/helpers";
 
 export function computeVaara(sunriseTime: AstroTime): VaaraResult {

@@ -23,7 +23,6 @@ describe("Time Calculations", () => {
     ];
 
     for (const { date, expected } of testCases) {
-      console.log({ date });
       const time = new AstroTime(date);
       const result = computeVaara(time);
       expect(result.index).toBe(expected);
@@ -59,10 +58,7 @@ describe("Time Calculations", () => {
     expect(result.sunsetTime).toBeDefined();
     expect(result.sunriseTime instanceof AstroTime).toBe(true);
     expect(result.sunsetTime instanceof AstroTime).toBe(true);
-    console.log({
-      rise: result.sunriseTime,
-      set: result.sunsetTime,
-    });
+
     // Sunrise should be before sunset on the same day
     expect(result.sunriseTime.ut < result.sunsetTime.ut).toBe(true);
 

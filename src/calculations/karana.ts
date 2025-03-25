@@ -1,6 +1,7 @@
 import { AstroTime, Observer, Body } from "astronomy-engine";
-import { KaranaResult } from "../models/types";
+
 import { tropicalLongitude, mod360 } from "../utils/helpers";
+import { KaranaResult } from "../models";
 
 export function computeKarana(
   sunriseTime: AstroTime,

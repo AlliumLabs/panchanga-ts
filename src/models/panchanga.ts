@@ -1,19 +1,5 @@
 import { AstroTime } from "astronomy-engine";
 
-export interface Place {
-  latitude: number;
-  longitude: number;
-  timezone: string; // can be a timezone string or numeric offset in hours
-}
-
-export interface PanchangaInput {
-  date: string; // ISO or DD/MM/YYYY
-  city?: string;
-  latitude?: number;
-  longitude?: number;
-  timezone?: string;
-}
-
 export interface PanchangaResponse {
   tithi: {
     index: number;
@@ -89,8 +75,8 @@ export interface PanchangaResponse {
     description: string;
   };
 }
-
 // Internal types for calculation results
+
 export interface TithiResult {
   index: number;
   endTime: AstroTime | null;

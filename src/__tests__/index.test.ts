@@ -1,8 +1,5 @@
-import {
-  calculatePanchanga,
-  PanchangaInput,
-  PanchangaResponse,
-} from "../index";
+import { PanchangaInput } from "../models";
+import calculatePanchanga from "../panchanga";
 
 describe("calculatePanchanga", () => {
   // Test with a city name
@@ -11,6 +8,7 @@ describe("calculatePanchanga", () => {
       city: "Mumbai",
       date: new Date().toISOString(),
     };
+    console.log({ input });
 
     const result = await calculatePanchanga(input);
     console.log({

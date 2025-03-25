@@ -1,5 +1,5 @@
 import { AstroTime, Observer, Body, SearchMoonPhase } from "astronomy-engine";
-import { MasaResult } from "../models/types";
+import { MasaResult } from "../models";
 import { tropicalLongitude, addDays } from "../utils/helpers";
 
 export function computeMasa(

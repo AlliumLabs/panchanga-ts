@@ -1,6 +1,5 @@
 import { AstroTime, Observer } from "astronomy-engine";
 import { computeMasa, computeRitu } from "../../calculations/masa";
-import { MasaResult } from "../../models/types";
 
 describe("Masa Calculations", () => {
   // Setup a standard observer for tests (Bangalore, India)

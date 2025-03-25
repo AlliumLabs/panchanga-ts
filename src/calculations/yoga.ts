@@ -1,5 +1,5 @@
 import { AstroTime, Observer, Body } from "astronomy-engine";
-import { YogaResult } from "../models/types";
+import { YogaResult } from "../models";
 import { siderealLongitude, interpolateTime, mod360 } from "../utils/helpers";
 
 export async function computeYoga(

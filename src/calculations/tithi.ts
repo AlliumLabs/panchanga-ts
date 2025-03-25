@@ -1,5 +1,5 @@
-import { AstroTime, Observer, Body, SearchMoonPhase } from "astronomy-engine";
-import { TithiResult } from "../models/types";
+import { AstroTime, Observer, Body } from "astronomy-engine";
+import { TithiResult } from "../models";
 import {
   tropicalLongitude,
   mod360,

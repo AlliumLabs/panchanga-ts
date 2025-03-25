@@ -1,5 +1,5 @@
 import { AstroTime, Observer, Body } from "astronomy-engine";
-import { NakshatraResult } from "../models/types";
+import { NakshatraResult } from "../models";
 import { siderealLongitude, interpolateTime } from "../utils/helpers";
 
 export async function computeNakshatra(

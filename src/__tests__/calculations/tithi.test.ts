@@ -1,6 +1,6 @@
 import { AstroTime, Observer } from "astronomy-engine";
 import { computeTithi } from "../../calculations/tithi";
-import { TithiResult } from "../../models/types";
+import { TithiResult } from "../../models";
 
 describe("Tithi Calculations", () => {
   // Setup a standard observer for tests (Bangalore, India)
