@@ -3,12 +3,7 @@ import { AstroTime, Observer } from "astronomy-engine";
 import sanskritNames from "./data/sanskrit_names";
 import cities from "./data/cities";
 import { Place, PanchangaInput, PanchangaResponse } from "./models/types";
-import {
-  getJulianDay,
-  astroTimeToISOString,
-  astroTimeToLocalTimeString,
-  parseInputDate,
-} from "./utils/helpers";
+import { getJulianDay, adjustToLocalTime } from "./utils/helpers";
 import {
   computeTithi,
   computeNakshatra,
@@ -71,33 +66,22 @@ export async function calculatePanchanga(
     throw new Error("Missing required geographical parameters.");
   }
 
-  // Parse date
-  const inputDate = parseInputDate(input.date);
-
-  // Create an AstroTime for local midnight of the given date.
-  const localMidnight = new Date(
-    Date.UTC(
-      inputDate.getUTCFullYear(),
-      inputDate.getUTCMonth(),
-      inputDate.getUTCDate()
-    )
-  );
-  // Adjust to UT using the timezone offset.
-  const adjustedUT = new Date(
-    localMidnight.getTime() - Number(place.timezone) * 3600000
-  );
-  const utTime = new AstroTime(adjustedUT);
+  console.log({ place });
+  // Parse date and adjust to local timezone
+  const parsedDate = new Date(input.date);
+  console.log({ parsedDate });
+  const localDate = adjustToLocalTime(parsedDate, place.timezone);
+  const utTime = new AstroTime(localDate);
   const observer = new Observer(place.latitude, place.longitude, 0);
 
   // Calculate sunrise and sunset times
   const { sunriseTime, sunsetTime } = calculateSunTimes(utTime, observer);
-
   // Compute Panchānga elements.
   const tithiData = computeTithi(sunriseTime, observer);
   const nakData = await computeNakshatra(sunriseTime, observer);
   const yogaData = await computeYoga(sunriseTime, observer);
   const karanaData = computeKarana(sunriseTime, observer);
-  const vaaraData = computeVaara(sunriseTime, place.timezone);
+  const vaaraData = computeVaara(sunriseTime);
   const masaData = computeMasa(sunriseTime, observer);
   const rituNum = computeRitu(masaData.masa);
   const julianDay = getJulianDay(sunriseTime.date);
@@ -110,38 +94,32 @@ export async function calculatePanchanga(
   return {
     tithi: {
       value: tithis[tithiData.index] || `Tithi ${tithiData.index}`,
-      start: astroTimeToISOString(sunriseTime, place.timezone),
-      end: tithiData.endTime
-        ? astroTimeToISOString(tithiData.endTime, place.timezone)
-        : undefined,
+      start: sunriseTime.date.toISOString(),
+      end: tithiData.endTime?.date.toISOString(),
       description: tithiData.description,
     },
     nakshatra: {
       value: nakshatras[nakData.index] || `Nakṣatra ${nakData.index}`,
-      start: astroTimeToISOString(sunriseTime, place.timezone),
-      end: nakData.endTime
-        ? astroTimeToISOString(nakData.endTime, place.timezone)
-        : undefined,
+      start: sunriseTime.date.toISOString(),
+      end: nakData.endTime?.date.toISOString(),
       description: nakData.description,
     },
     yoga: {
       value: yogas[yogaData.index] || `Yoga ${yogaData.index}`,
-      start: astroTimeToISOString(sunriseTime, place.timezone),
-      end: yogaData.endTime
-        ? astroTimeToISOString(yogaData.endTime, place.timezone)
-        : undefined,
+      start: sunriseTime.date.toISOString(),
+      end: yogaData.endTime?.date.toISOString(),
       description: yogaData.description,
     },
     karana: {
       value: karanas[karanaData.index] || `Karaṇa ${karanaData.index}`,
-      start: astroTimeToISOString(sunriseTime, place.timezone),
-      end: astroTimeToISOString(sunriseTime, place.timezone),
+      start: sunriseTime.date.toISOString(),
+      end: sunsetTime.date.toISOString(),
       description: karanaData.description,
     },
     vaara: {
       value: vaaras[vaaraData.index] || `Vaara ${vaaraData.index}`,
-      start: astroTimeToISOString(sunriseTime, place.timezone),
-      end: astroTimeToISOString(sunriseTime, place.timezone),
+      start: sunriseTime.date.toISOString(),
+      end: sunsetTime.date.toISOString(),
       description: vaaraData.description,
     },
     masa: {
@@ -173,12 +151,12 @@ export async function calculatePanchanga(
         "Samvatsara is the name of the year in the 60-year cycle, each bearing its own mythological and astrological significance.",
     },
     sunrise: {
-      value: astroTimeToLocalTimeString(sunriseTime, place.timezone),
+      value: sunriseTime.date.toISOString(),
       description:
         "Sunrise is revered as a sacred time that marks the beginning of the day and the renewal of spiritual energy.",
     },
     sunset: {
-      value: astroTimeToLocalTimeString(sunsetTime, place.timezone),
+      value: sunsetTime.date.toISOString(),
       description:
         "Sunset signals the end of the day and is a time for reflection, prayer, and letting go in the Hindu tradition.",
     },

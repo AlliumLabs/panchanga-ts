@@ -3,7 +3,7 @@ import { AstroTime } from "astronomy-engine";
 export interface Place {
   latitude: number;
   longitude: number;
-  timezone: string | number; // can be a timezone string or numeric offset in hours
+  timezone: string; // can be a timezone string or numeric offset in hours
 }
 
 export interface PanchangaInput {
@@ -11,7 +11,7 @@ export interface PanchangaInput {
   city?: string;
   latitude?: number;
   longitude?: number;
-  timezone?: string | number;
+  timezone?: string;
 }
 
 export interface PanchangaResponse {
@@ -84,6 +84,10 @@ export interface PanchangaResponse {
 export interface TithiResult {
   index: number;
   endTime: AstroTime | null;
+  leapTithi?: {
+    index: number;
+    endTime: AstroTime | null;
+  };
   description: string;
 }
 

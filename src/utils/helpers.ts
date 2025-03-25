@@ -4,8 +4,9 @@ import {
   Body,
   Vector,
   Equator,
-  Ecliptic
+  Ecliptic,
 } from "astronomy-engine";
+import moment from "moment-timezone";
 
 export function getJulianDay(date: Date): number {
   return date.getTime() / 86400000 + 2440587.5;
@@ -15,6 +16,16 @@ export function mod360(angle: number): number {
   return ((angle % 360) + 360) % 360;
 }
 
+export function getAngleDifference(angle1: number, angle2: number) {
+  // Calculate the absolute difference and normalize it within 0-360 degrees
+  let diff = Math.abs(angle1 - angle2) % 360;
+  // If the difference is more than 180, take the complementary angle
+  if (diff > 180) {
+    diff = 360 - diff;
+  }
+  return diff;
+}
+
 export function formatTimeFromDate(date: Date): string {
   const hh = date.getHours().toString().padStart(2, "0");
   const mm = date.getMinutes().toString().padStart(2, "0");
@@ -22,7 +33,10 @@ export function formatTimeFromDate(date: Date): string {
   return `${hh}:${mm}:${ss}`;
 }
 
-export function adjustTimeByTimezone(date: Date, timezone: string | number): Date {
+export function adjustTimeByTimezone(
+  date: Date,
+  timezone: string | number
+): Date {
   if (typeof timezone === "string" && isNaN(Number(timezone))) {
     try {
       const formatter = new Intl.DateTimeFormat("en-US", {
@@ -39,6 +53,11 @@ export function adjustTimeByTimezone(date: Date, timezone: string | number): Dat
   } else {
     return new Date(date.getTime() + Number(timezone) * 3600000);
   }
+}
+
+export function adjustToLocalTime(date: Date, tz: string): Date {
+  // Create a moment object from the UTC date, then convert to the specified timezone.
+  return moment.utc(date).tz(tz).toDate();
 }
 
 export function astroTimeToISOString(
@@ -58,12 +77,14 @@ export function astroTimeToLocalTimeString(
 }
 
 export function addDays(time: AstroTime, days: number): AstroTime {
-  const d = new Date(time.date.getTime());
-  d.setUTCSeconds(d.getUTCSeconds() + days * 86400);
+  const d = new Date(time.date.getTime() + days * 86400000);
   return new AstroTime(d);
 }
-
-export function inverseLagrange(x: number[], y: number[], target: number): number {
+export function inverseLagrange(
+  x: number[],
+  y: number[],
+  target: number
+): number {
   let total = 0;
   for (let i = 0; i < x.length; i++) {
     let numer = 1;

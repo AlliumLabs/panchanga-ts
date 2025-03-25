@@ -6,9 +6,8 @@ export function computeMasa(
   sunriseTime: AstroTime,
   observer: Observer
 ): MasaResult {
-  const nextNewMoon = SearchMoonPhase(0, sunriseTime, 2);
-  const estimatedPrev = addDays(sunriseTime, -29.53);
-  const lastNewMoon = SearchMoonPhase(0, estimatedPrev, -2);
+  const nextNewMoon = SearchMoonPhase(0, sunriseTime, 29.53);
+  const lastNewMoon = addDays(sunriseTime, -29.53);
   if (!lastNewMoon || !nextNewMoon) {
     throw new Error("Failed to compute new moon times.");
   }

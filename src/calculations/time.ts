@@ -1,16 +1,13 @@
 import { AstroTime, Observer, Body, SearchRiseSet } from "astronomy-engine";
 import { DayDurationResult, VaaraResult } from "../models/types";
-import { formatTimeFromDate, adjustTimeByTimezone } from "../utils/helpers";
+import { formatTimeFromDate } from "../utils/helpers";
 
-export function computeVaara(
-  sunriseTime: AstroTime,
-  timezone: string | number
-): VaaraResult {
-  const localDate = adjustTimeByTimezone(sunriseTime.date, timezone);
-  const weekdayIndex = localDate.getUTCDay();
+export function computeVaara(sunriseTime: AstroTime): VaaraResult {
+  // Use local day of week instead of UTC to avoid timezone issues
+  const weekdayIndex = sunriseTime.date.getDay();
   return {
     index: weekdayIndex,
-    time: formatTimeFromDate(localDate),
+    time: formatTimeFromDate(sunriseTime.date),
     description:
       "Vāra represents the weekday, each imbued with its own divine character and spiritual significance.",
   };
@@ -37,10 +34,10 @@ export function computeDayDuration(
 export function calculateSunTimes(utTime: AstroTime, observer: Observer) {
   const sunriseTime = SearchRiseSet(Body.Sun, observer, +1, utTime, 2);
   const sunsetTime = SearchRiseSet(Body.Sun, observer, -1, utTime, 2);
-  
+
   if (!sunriseTime || !sunsetTime) {
     throw new Error("Failed to compute sunrise and sunset times.");
   }
-  
+
   return { sunriseTime, sunsetTime };
 }
