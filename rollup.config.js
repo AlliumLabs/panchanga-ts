@@ -24,6 +24,5 @@ export default {
       useTsconfigDeclarationDir: true,
     }),
   ],
-  // Mark astronomy-engine as external so it's not bundled
-  external: ["astronomy-engine"],
+  external: ["astronomy-engine", "moment-timezone"],
 };
