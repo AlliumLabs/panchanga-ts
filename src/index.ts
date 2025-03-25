@@ -93,36 +93,42 @@ export async function calculatePanchanga(
   // Build and return the Panchānga response.
   return {
     tithi: {
+      index: tithiData.index,
       value: tithis[tithiData.index] || `Tithi ${tithiData.index}`,
       start: sunriseTime.date.toISOString(),
       end: tithiData.endTime?.date.toISOString(),
       description: tithiData.description,
     },
     nakshatra: {
+      index: nakData.index,
       value: nakshatras[nakData.index] || `Nakṣatra ${nakData.index}`,
       start: sunriseTime.date.toISOString(),
       end: nakData.endTime?.date.toISOString(),
       description: nakData.description,
     },
     yoga: {
+      index: yogaData.index,
       value: yogas[yogaData.index] || `Yoga ${yogaData.index}`,
       start: sunriseTime.date.toISOString(),
       end: yogaData.endTime?.date.toISOString(),
       description: yogaData.description,
     },
     karana: {
+      index: karanaData.index,
       value: karanas[karanaData.index] || `Karaṇa ${karanaData.index}`,
       start: sunriseTime.date.toISOString(),
       end: sunsetTime.date.toISOString(),
       description: karanaData.description,
     },
     vaara: {
+      index: vaaraData.index,
       value: vaaras[vaaraData.index] || `Vaara ${vaaraData.index}`,
       start: sunriseTime.date.toISOString(),
       end: sunsetTime.date.toISOString(),
       description: vaaraData.description,
     },
     masa: {
+      index: masaData.masa,
       value:
         (masaData.isLeap ? "Adhika " : "") +
         (masas[masaData.masa] || `Māsa ${masaData.masa}`),
@@ -130,11 +136,13 @@ export async function calculatePanchanga(
         "Māsa signifies the lunar month as determined by the interval between new moons. A leap month (Adhika Māsa) occurs when the Sun remains in the same zodiac sign across successive new moons.",
     },
     ritu: {
+      index: rituNum,
       value: ritus[rituNum] || `Ṛtu ${rituNum}`,
       description:
         "Ṛtu (season) divides the year into six segments, reflecting nature's cyclic changes celebrated in numerous Hindu festivals.",
     },
     ahargana: {
+      index: Math.floor(aharganaNum),
       value: Math.floor(aharganaNum).toString(),
       description:
         "Ahargaṇa is the count of days since the beginning of Kali Yuga, representing the cosmic passage of time in Hindu cosmology.",
@@ -146,6 +154,7 @@ export async function calculatePanchanga(
         "Elapsed Year represents the number of years passed in the Kali and Śālivāhana Śaka eras, integral to traditional Hindu timekeeping.",
     },
     samvatsara: {
+      index: samvatNum,
       value: samvats[samvatNum] || `Samvatsara ${samvatNum}`,
       description:
         "Samvatsara is the name of the year in the 60-year cycle, each bearing its own mythological and astrological significance.",
@@ -161,6 +170,7 @@ export async function calculatePanchanga(
         "Sunset signals the end of the day and is a time for reflection, prayer, and letting go in the Hindu tradition.",
     },
     day_duration: {
+      duration: dayDuration.duration,
       value: dayDuration.formatted,
       description:
         "Day Duration is the total span of daylight, important for scheduling rituals and daily observances in accordance with natural cycles.",

@@ -16,44 +16,52 @@ export interface PanchangaInput {
 
 export interface PanchangaResponse {
   tithi: {
+    index: number;
     value: string;
     start?: string;
     end?: string;
     description: string;
   };
   nakshatra: {
+    index: number;
     value: string;
     start?: string;
     end?: string;
     description: string;
   };
   yoga: {
+    index: number;
     value: string;
     start?: string;
     end?: string;
     description: string;
   };
   karana: {
+    index: number;
     value: string;
     start?: string;
     end?: string;
     description: string;
   };
   vaara: {
+    index: number;
     value: string;
     start?: string;
     end?: string;
     description: string;
   };
   masa: {
+    index: number;
     value: string;
     description: string;
   };
   ritu: {
+    index: number;
     value: string;
     description: string;
   };
   ahargana: {
+    index: number;
     value: string;
     description: string;
   };
@@ -63,6 +71,7 @@ export interface PanchangaResponse {
     description: string;
   };
   samvatsara: {
+    index: number;
     value: string;
     description: string;
   };
@@ -75,6 +84,7 @@ export interface PanchangaResponse {
     description: string;
   };
   day_duration: {
+    duration: number;
     value: string;
     description: string;
   };
