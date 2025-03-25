@@ -66,10 +66,8 @@ export async function calculatePanchanga(
     throw new Error("Missing required geographical parameters.");
   }
 
-  console.log({ place });
   // Parse date and adjust to local timezone
   const parsedDate = new Date(input.date);
-  console.log({ parsedDate });
   const localDate = adjustToLocalTime(parsedDate, place.timezone);
   const utTime = new AstroTime(localDate);
   const observer = new Observer(place.latitude, place.longitude, 0);
