@@ -21,6 +21,7 @@ export default {
     resolve(), // so Rollup can find node_modules
     commonjs(), // so Rollup can convert CommonJS to ES modules
     typescript({
+      tsconfig: "tsconfig.build.json",
       useTsconfigDeclarationDir: true,
     }),
   ],

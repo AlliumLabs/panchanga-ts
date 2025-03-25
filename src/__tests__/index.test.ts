@@ -1,5 +1,5 @@
-import { PanchangaInput } from "../models";
-import calculatePanchanga from "../panchanga";
+import { PanchangaInput } from "../index";
+import { calculatePanchanga } from "../index";
 
 describe("calculatePanchanga", () => {
   // Test with a city name

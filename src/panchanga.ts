@@ -27,9 +27,8 @@ const masas = sanskritNames.masas;
 const samvats = sanskritNames.samvats;
 const ritus = sanskritNames.ritus;
 
-// --- Main Function ---
 // This is the simple function call that wraps the Panchānga calculations.
-async function calculatePanchanga(
+export async function calculatePanchanga(
   input: PanchangaInput
 ): Promise<PanchangaResponse> {
   // Determine the Place based on input.
@@ -174,5 +173,3 @@ async function calculatePanchanga(
     },
   };
 }
-
-export default calculatePanchanga;
