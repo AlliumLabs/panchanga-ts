@@ -23,7 +23,6 @@ describe("Time Calculations", () => {
     ];
 
     for (const { date, expected } of testCases) {
-      console.log({ date });
       const time = new AstroTime(date);
       const result = computeVaara(time);
       expect(result.index).toBe(expected);
@@ -48,21 +47,13 @@ describe("Time Calculations", () => {
   });
 
   test("calculates sun times correctly for a given location and date", () => {
-    const date = new Date(); // Jan 1, 2023, noon
-    const adjustedDate = adjustTimeByTimezone(date, "Asia/Kolkata");
-    const time = new AstroTime(adjustedDate);
-
-    const result = calculateSunTimes(time, observer);
+    const result = calculateSunTimes(new Date(), observer);
 
     // Basic validity checks
     expect(result.sunriseTime).toBeDefined();
     expect(result.sunsetTime).toBeDefined();
     expect(result.sunriseTime instanceof AstroTime).toBe(true);
     expect(result.sunsetTime instanceof AstroTime).toBe(true);
-    console.log({
-      rise: result.sunriseTime,
-      set: result.sunsetTime,
-    });
     // Sunrise should be before sunset on the same day
     expect(result.sunriseTime.ut < result.sunsetTime.ut).toBe(true);
 

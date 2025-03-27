@@ -69,11 +69,9 @@ export async function calculatePanchanga(
   // Parse date and adjust to local timezone
   const parsedDate = new Date(input.date);
   const localDate = adjustToLocalTime(parsedDate, place.timezone);
-  const utTime = new AstroTime(localDate);
   const observer = new Observer(place.latitude, place.longitude, 0);
+  const { sunriseTime, sunsetTime } = calculateSunTimes(localDate, observer);
 
-  // Calculate sunrise and sunset times
-  const { sunriseTime, sunsetTime } = calculateSunTimes(utTime, observer);
   // Compute Panchānga elements.
   const tithiData = computeTithi(sunriseTime, observer);
   const nakData = await computeNakshatra(sunriseTime, observer);

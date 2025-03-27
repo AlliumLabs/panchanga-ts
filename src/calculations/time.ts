@@ -31,9 +31,11 @@ export function computeDayDuration(
   return { duration: diffHours, formatted: `${hh}:${mm}:${ss}` };
 }
 
-export function calculateSunTimes(utTime: AstroTime, observer: Observer) {
-  const sunriseTime = SearchRiseSet(Body.Sun, observer, +1, utTime, 2);
-  const sunsetTime = SearchRiseSet(Body.Sun, observer, -1, utTime, 2);
+export function calculateSunTimes(localDate: Date, observer: Observer) {
+  const localMidnight = new Date(localDate);
+  localMidnight.setHours(0, 0, 0, 0);
+  const sunriseTime = SearchRiseSet(Body.Sun, observer, +1, localMidnight, 1);
+  const sunsetTime = SearchRiseSet(Body.Sun, observer, -1, localMidnight, 1);
 
   if (!sunriseTime || !sunsetTime) {
     throw new Error("Failed to compute sunrise and sunset times.");
