@@ -15,7 +15,7 @@ Panchanga-TS (`@alliumlabs/panchanga-ts`) is a TypeScript library for Hindu cale
 - **Ahargana**: Day count since Kali Yuga epoch
 - **Sun times**: Sunrise and sunset calculations
 
-The library uses the `astronomy-engine` package for astronomical calculations and `moment-timezone` for timezone handling.
+The library requires `astronomy-engine` (peer dependency) for astronomical calculations and `moment-timezone` (peer dependency) for timezone handling. These must be installed by the consuming application.
 
 ## Directory Structure
 
@@ -178,7 +178,8 @@ npm run release
 
 ### Dependencies
 
-- Use peer dependencies for `astronomy-engine` and `moment-timezone`
+- `astronomy-engine` and `moment-timezone` are peer dependencies (not bundled with the library)
+- Consuming applications must install these dependencies themselves
 - Keep dependencies up to date for security patches
 - Run `npm audit` regularly to check for vulnerabilities
 
@@ -198,7 +199,7 @@ When working on this project, be aware of these key concepts:
 2. **Nakshatra**: 27 lunar mansions, each 13°20' of the zodiac
 3. **Masa**: Lunar months named after nakshatras
 4. **Adhika Masa**: Leap month when sun stays in same sign across new moons
-5. **Ahargana**: Day count from Kali Yuga epoch (February 18, 3102 BCE)
+5. **Ahargana**: Day count from Kali Yuga epoch (February 18, 3102 BCE, Julian calendar)
 6. **Samvatsara**: 60-year naming cycle
 7. **Panchanga**: Literally "five limbs" (tithi, vaara, nakshatra, yoga, karana)
 
