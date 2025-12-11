@@ -57,10 +57,14 @@ export async function calculatePanchanga(
     input.longitude !== undefined &&
     input.timezone !== undefined
   ) {
+    const timezoneValue =
+      typeof input.timezone === "string" && isNaN(Number(input.timezone))
+        ? input.timezone
+        : Number(input.timezone);
     place = {
       latitude: Number(input.latitude),
       longitude: Number(input.longitude),
-      timezone: input.timezone,
+      timezone: timezoneValue,
     };
   } else {
     throw new Error("Missing required geographical parameters.");

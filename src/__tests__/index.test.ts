@@ -29,23 +29,25 @@ describe("calculatePanchanga", () => {
     expect(result.sunset).toBeDefined();
   });
 
-  // Test with latitude, longitude, timezone
-  //   test("should calculate panchanga using coordinates", async () => {
-  //     const input: PanchangaInput = {
-  //       latitude: 19.076,
-  //       longitude: 72.8777,
-  //       timezone: 5.5,
-  //       date: "2023-10-15",
-  //     };
+  // Test with latitude, longitude, numeric timezone offset
+  test("should calculate panchanga using coordinates", async () => {
+    const input: PanchangaInput = {
+      latitude: 19.076,
+      longitude: 72.8777,
+      timezone: 5.5,
+      date: "2023-10-15",
+    };
 
-  //     const result = await calculatePanchanga(input);
+    const result = await calculatePanchanga(input);
 
-  //     // Verify the response structure
-  //     expect(result).toBeDefined();
-  //     expect(result.tithi.value).toBeTruthy();
-  //     expect(result.nakshatra.value).toBeTruthy();
-  //     expect(result.yoga.value).toBeTruthy();
-  //   });
+    // Verify the response structure
+    expect(result).toBeDefined();
+    expect(result.tithi.value).toBeTruthy();
+    expect(result.nakshatra.value).toBeTruthy();
+    expect(result.yoga.value).toBeTruthy();
+    expect(result.sunrise.value).toBeTruthy();
+    expect(result.sunset.value).toBeTruthy();
+  });
 
   // Test error handling - unknown city
   test("should throw error for unknown city", async () => {

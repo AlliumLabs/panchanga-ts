@@ -55,9 +55,13 @@ export function adjustTimeByTimezone(
   }
 }
 
-export function adjustToLocalTime(date: Date, tz: string): Date {
-  // Create a moment object from the UTC date, then convert to the specified timezone.
-  return moment.utc(date).tz(tz).toDate();
+export function adjustToLocalTime(date: Date, tz: string | number): Date {
+  // Handle both IANA timezone strings and numeric UTC offsets (in hours).
+  if (typeof tz === "string" && isNaN(Number(tz))) {
+    return moment.utc(date).tz(tz).toDate();
+  }
+  const offsetHours = Number(tz);
+  return new Date(date.getTime() + offsetHours * 3600000);
 }
 
 export function astroTimeToISOString(
