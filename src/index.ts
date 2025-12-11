@@ -3,7 +3,11 @@ import { AstroTime, Observer } from "astronomy-engine";
 import sanskritNames from "./data/sanskrit_names";
 import cities from "./data/cities";
 import { Place, PanchangaInput, PanchangaResponse } from "./models/types";
-import { getJulianDay, adjustToLocalTime } from "./utils/helpers";
+import {
+  getJulianDay,
+  adjustToLocalTime,
+  resolveTimezone,
+} from "./utils/helpers";
 import {
   computeTithi,
   computeNakshatra,
@@ -57,10 +61,7 @@ export async function calculatePanchanga(
     input.longitude !== undefined &&
     input.timezone !== undefined
   ) {
-    const timezoneValue =
-      typeof input.timezone === "string" && isNaN(Number(input.timezone))
-        ? input.timezone
-        : Number(input.timezone);
+    const timezoneValue = resolveTimezone(input.timezone);
     place = {
       latitude: Number(input.latitude),
       longitude: Number(input.longitude),

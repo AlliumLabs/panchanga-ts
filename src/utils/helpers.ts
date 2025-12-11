@@ -33,34 +33,42 @@ export function formatTimeFromDate(date: Date): string {
   return `${hh}:${mm}:${ss}`;
 }
 
-export function adjustTimeByTimezone(
-  date: Date,
-  timezone: string | number
-): Date {
-  if (typeof timezone === "string" && isNaN(Number(timezone))) {
+export function resolveTimezone(tz: string | number): string | number {
+  if (typeof tz === "string" && isNaN(Number(tz))) {
+    if (moment.tz.zone(tz)) {
+      return tz;
+    }
+    console.warn(`Invalid timezone string: ${tz}. Treating as numeric offset.`);
+  }
+  return Number(tz);
+}
+
+export function adjustTimeByTimezone(date: Date, timezone: string | number): Date {
+  const resolvedTz = resolveTimezone(timezone);
+  if (typeof resolvedTz === "string") {
     try {
       const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: timezone,
+        timeZone: resolvedTz,
         timeZoneName: "short",
       });
       return new Date(formatter.format(date));
     } catch (e) {
       console.warn(
-        `Invalid timezone string: ${timezone}. Using numeric offset.`
+        `Invalid timezone string: ${resolvedTz}. Using numeric offset.`
       );
-      return new Date(date.getTime() + Number(timezone) * 3600000);
+      return new Date(date.getTime() + Number(resolvedTz) * 3600000);
     }
   } else {
-    return new Date(date.getTime() + Number(timezone) * 3600000);
+    return new Date(date.getTime() + Number(resolvedTz) * 3600000);
   }
 }
 
 export function adjustToLocalTime(date: Date, tz: string | number): Date {
-  // Handle both IANA timezone strings and numeric UTC offsets (in hours).
-  if (typeof tz === "string" && isNaN(Number(tz))) {
-    return moment.utc(date).tz(tz).toDate();
+  const resolvedTz = resolveTimezone(tz);
+  if (typeof resolvedTz === "string") {
+    return moment.utc(date).tz(resolvedTz).toDate();
   }
-  const offsetHours = Number(tz);
+  const offsetHours = Number(resolvedTz);
   return new Date(date.getTime() + offsetHours * 3600000);
 }
 
