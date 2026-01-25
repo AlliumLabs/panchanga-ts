@@ -8,6 +8,17 @@ import {
 } from "astronomy-engine";
 import moment from "moment-timezone";
 
+const MS_PER_HOUR = 3600000;
+
+function normalizeOffset(offset: number): number {
+  if (!Number.isFinite(offset) || offset < -12 || offset > 14) {
+    throw new Error(
+      "Numeric timezone offset must be between -12 and +14 hours."
+    );
+  }
+  return offset;
+}
+
 export function getJulianDay(date: Date): number {
   return date.getTime() / 86400000 + 2440587.5;
 }
@@ -33,31 +44,37 @@ export function formatTimeFromDate(date: Date): string {
   return `${hh}:${mm}:${ss}`;
 }
 
-export function adjustTimeByTimezone(
-  date: Date,
-  timezone: string | number
-): Date {
-  if (typeof timezone === "string" && isNaN(Number(timezone))) {
-    try {
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: timezone,
-        timeZoneName: "short",
-      });
-      return new Date(formatter.format(date));
-    } catch (e) {
-      console.warn(
-        `Invalid timezone string: ${timezone}. Using numeric offset.`
-      );
-      return new Date(date.getTime() + Number(timezone) * 3600000);
+export function resolveTimezone(tz: string | number): string | number {
+  if (typeof tz === "string") {
+    const numericValue = Number(tz);
+    if (!Number.isNaN(numericValue) && Number.isFinite(numericValue)) {
+      return normalizeOffset(numericValue);
     }
+    if (moment.tz.zone(tz)) {
+      return tz;
+    }
+    throw new Error(
+      `Invalid timezone string: ${tz}. Provide an IANA zone name or numeric offset.`
+    );
+  }
+  if (typeof tz === "number" && Number.isFinite(tz)) {
+    return normalizeOffset(tz);
+  }
+  throw new Error("Invalid timezone offset supplied.");
+}
+
+export function adjustTimeByTimezone(date: Date, timezone: string | number): Date {
+  const resolvedTz = resolveTimezone(timezone);
+  if (typeof resolvedTz === "string") {
+    return moment.utc(date).tz(resolvedTz).toDate();
   } else {
-    return new Date(date.getTime() + Number(timezone) * 3600000);
+    // Positive offsets represent hours ahead of UTC (e.g., +5.5 for IST).
+    return new Date(date.getTime() + resolvedTz * MS_PER_HOUR);
   }
 }
 
-export function adjustToLocalTime(date: Date, tz: string): Date {
-  // Create a moment object from the UTC date, then convert to the specified timezone.
-  return moment.utc(date).tz(tz).toDate();
+export function adjustToLocalTime(date: Date, tz: string | number): Date {
+  return adjustTimeByTimezone(date, tz);
 }
 
 export function astroTimeToISOString(

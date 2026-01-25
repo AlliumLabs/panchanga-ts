@@ -38,7 +38,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   },
-  "peerDependencies": {
+  "dependencies": {
     "astronomy-engine": "^2.1.19",
     "moment-timezone": "^0.5.48"
   }

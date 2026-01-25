@@ -3,7 +3,11 @@ import { AstroTime, Observer } from "astronomy-engine";
 import sanskritNames from "./data/sanskrit_names";
 import cities from "./data/cities";
 import { Place, PanchangaInput, PanchangaResponse } from "./models/types";
-import { getJulianDay, adjustToLocalTime } from "./utils/helpers";
+import {
+  getJulianDay,
+  adjustToLocalTime,
+  resolveTimezone,
+} from "./utils/helpers";
 import {
   computeTithi,
   computeNakshatra,
@@ -57,10 +61,11 @@ export async function calculatePanchanga(
     input.longitude !== undefined &&
     input.timezone !== undefined
   ) {
+    const timezoneValue = resolveTimezone(input.timezone);
     place = {
       latitude: Number(input.latitude),
       longitude: Number(input.longitude),
-      timezone: input.timezone,
+      timezone: timezoneValue,
     };
   } else {
     throw new Error("Missing required geographical parameters.");
